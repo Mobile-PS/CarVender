@@ -8,19 +8,18 @@
 .buildlog/
 .history
 .svn/
+*.hprof
 
-# IntelliJ related
+# IntelliJ / Android Studio
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# VS Code
+.vscode/
 
-# Flutter/Dart/Pub related
+# Flutter/Dart/Pub
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
@@ -30,17 +29,37 @@
 .pub-cache/
 .pub/
 /build/
+coverage/
 
-# Web related
+# Web
 lib/generated_plugin_registrant.dart
 
-# Symbolication related
+# Symbolication / obfuscation
 app.*.symbols
-
-# Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Android build outputs
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/app/build/
+**/android/**/build/
+
+# Never commit local SDK paths or secrets
+**/local.properties
+key.properties
+**/*.keystore
+**/*.jks
+*.pem
+
+# Gradle distribution zips (download via wrapper; do not commit)
+*.zip
+android/gradle/*.zip
+
+# Large / generated caches
+**/.gradle/
+**/captures/
+*.apk
+*.aab
+*.ap_
+*.dex

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1039058392882",
+    "project_id": "busnotification-f2fd6",
+    "storage_bucket": "busnotification-f2fd6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039058392882:android:41bbced673d6cc818fa92b",
+        "android_client_info": {
+          "package_name": "com.car_vendor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuiPCYdr88ekU08sEjloVZbdrSMZc91sM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,11 +1,13 @@
+import 'package:carvendor/controller/home_screen_controller.dart';
+import 'package:carvendor/profile.dart';
 import 'package:carvendor/service_list_screen.dart';
 import 'package:carvendor/service_list_screen1.dart';
+import 'package:carvendor/service_list_screen2.dart';
+import 'package:carvendor/utilities/common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class HomeScreen extends StatefulWidget {
-
   const HomeScreen({
     Key? key,
   }) : super(key: key);
@@ -16,11 +18,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreen extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
- // final userPreference = Get.put(UserPreferenceScreenController());
+  // final userPreference = Get.put(UserPreferenceScreenController());
   late TabController _controller;
   IconData icon = Icons.arrow_forward_ios_rounded;
-
-
+  final loginCtrl = Get.put(HomeScreenController());
 
   @override
   void initState() {
@@ -28,9 +29,18 @@ class _HomeScreen extends State<HomeScreen>
     super.initState();
     _controller = TabController(length: 3, vsync: this);
     _controller.addListener(() {
-
-     // printLog("Selected Index: " + _controller.index.toString());
+      printLog("Selected Index: " + _controller.index.toString());
+      if (_controller.index == 0) {
+        loginCtrl.getData();
+      }
+      if (_controller.index == 1) {
+        loginCtrl.getDataInProcess();
+      }
+      if (_controller.index == 2) {
+        loginCtrl.getDataCompleted();
+      }
     });
+    loginCtrl.getData();
   }
 
   @override
@@ -42,7 +52,8 @@ class _HomeScreen extends State<HomeScreen>
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0.0,
-            leading: IconButton(
+            leading: SizedBox.shrink(),
+            /*IconButton(
               icon: const Icon(
                 Icons.arrow_back,
                 color: Colors.black,
@@ -50,15 +61,23 @@ class _HomeScreen extends State<HomeScreen>
               onPressed: () {
                 Get.back();
               },
-            ),
+            ),*/
             actions: [
               IconButton(
-               icon:
-              Icon(Icons.account_balance_wallet_outlined,color: Colors.black,), onPressed: () {
-
-              },),
+                icon: Icon(
+                  Icons.perm_contact_cal_outlined,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Get.to(Profile());
+                },
+              ),
             ],
-            title: Image.asset('assets/logo.png',height: 200,width: 150,),
+            title: Image.asset(
+              'assets/logo.png',
+              height: 150,
+              width: 130,
+            ),
             bottom: TabBar(
               labelColor: Colors.grey,
               indicatorColor: Colors.deepOrangeAccent,
@@ -83,7 +102,6 @@ class _HomeScreen extends State<HomeScreen>
                     style: const TextStyle(color: Colors.deepOrangeAccent),
                   ),
                 ),
-
               ],
             ),
           ),
@@ -93,15 +111,12 @@ class _HomeScreen extends State<HomeScreen>
               children: const [
                 ServiceListScreen(),
                 ServiceListScreen1(),
-                ServiceListScreen1(),
-
+                ServiceListScreen2(),
                 // PersonalFormWidget(),
                 // ProfessionalFormWidget(),
                 // PersonalUplodFormWidget(),
-
               ],
             ),
-
           ]),
         ));
   }

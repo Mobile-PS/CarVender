@@ -1,8 +1,7 @@
 import 'package:carvendor/constants.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
-
-
+import 'models/OrderModel.dart';
 class FreelancerCard extends StatelessWidget {
   final Color? color;
   final String? name;
@@ -10,7 +9,9 @@ class FreelancerCard extends StatelessWidget {
   final double? rating;
   final int? comments;
   final ImageProvider<dynamic>? image;
-
+  final OrderData? orderData;
+  final Function onpress1;
+  final Function onRejectpress1;
   const FreelancerCard({
     this.color,
     this.name,
@@ -18,50 +19,52 @@ class FreelancerCard extends StatelessWidget {
     this.rating,
     this.comments,
     this.image,
+    this.orderData,
+    required this.onpress1,
+    required this.onRejectpress1,
   });
-
   @override
   Widget build(BuildContext context) {
     return  Padding(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
-      child:
-      ExpansionTileCard(
-       elevation: 5,
-        initialElevation: 5,
-        initiallyExpanded: false,
-        trailing:
-           Icon(
+        child:
+        ExpansionTileCard(
+          elevation: 5,
+          initialElevation: 5,
+          initiallyExpanded: false,
+          trailing:
+          Icon(
             Icons.keyboard_arrow_down_sharp,
             color: Colors.black,
             size: 24,
           ),
-      baseColor: Color(0xfff2f2f2),
-      expandedColor: Color(0xfff2f2f2),
-      title: Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-              /*  Navigator.push(
+          baseColor: Color(0xfff2f2f2),
+          expandedColor: Color(0xfff2f2f2),
+          title: Container(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Column(
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              /*  Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProfileScreen(),
                   ),
                 );*/
-              },
-              child:
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.white,
-            // Border radius
-            child:
-            ClipOval(child: Image(image: image as ImageProvider)),
-          )),
-         /* SizedBox(height: 10),
+                            },
+                            child:
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.white,
+                              // Border radius
+                              child:
+                              ClipOval(child: Image(image: image as ImageProvider)),
+                            )),
+                        /* SizedBox(height: 10),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -78,95 +81,213 @@ class FreelancerCard extends StatelessWidget {
           SizedBox(height: 5),
           Text('1000 total user', style: kMediumDescStyle),
             SizedBox(height: 5),*/
-
-
-        ],),
-        Expanded(
-            child:
-                Padding(
-                  padding: EdgeInsets.only(left: 5),
-            child:
-                Container(
-                child:
-            Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('Suraj Chandravanshi', style: kLargeDescStyle),
-              SizedBox(height: 10,),
-              Row(children: [
-                Icon(Icons.location_on_outlined,color: Colors.black,size: 16,),
-                Expanded(
-                    flex : 2,
-                    child:
-                    Text('Source', style: kLargeDescStyle)),
-                Expanded(
-                    child:
-                    Text('Nagapur', style: kMediumDescStyle)),
-              ],),
-              SizedBox(height: 10,),
-              Row(children: [
-                Icon(Icons.location_on_outlined,color: Colors.black,size: 16,),
-                Expanded(
-                  flex : 2,
-                    child:
-                Text('Destination', style: kLargeDescStyle)),
-                Expanded(
-                    child:
-                Text('Delhi', style: kMediumDescStyle)),
-              ],),
-
-              SizedBox(height: 10,),
-              Row(children: [
-                Icon(Icons.date_range,color: Colors.black,size: 16,),
-                Expanded(
-                    flex : 1,
-                    child:
-                    Text('10/09/2022', style: kLargeDescStyle)),
-              ],),
-
-              SizedBox(height: 10,),
-              Row(children: [
+                      ],),
+                    Expanded(
+                        child:
+                        Padding(
+                            padding: EdgeInsets.only(left: 5),
+                            child:
+                            Container(
+                                child:
+                                Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(orderData!.customerName.toString(), style: kLargeDescStyle),
+                                      SizedBox(height: 10,),
+                                      Row(children: [
+                                        Icon(Icons.location_on_outlined,color: Colors.black,size: 16,),
+                                        Expanded(
+                                            flex : 2,
+                                            child:
+                                            Text('Source', style: kLargeDescStyle)),
+                                      ],),
+                                      Text(orderData!.fromPlace.toString(), style: kMediumDescStyle),
+                                      SizedBox(height: 5,),
+                                      Row(children: [
+                                        Icon(Icons.location_on_outlined,color: Colors.black,size: 16,),
+                                        Expanded(
+                                            flex : 2,
+                                            child:
+                                            Text('Destination', style: kLargeDescStyle)),
+                                      ],),
+                                      Text(orderData!.toPlace.toString()+",${orderData?.destinations?.join(',')}", style: kMediumDescStyle),
+                                      SizedBox(height: 10,),
+                                      Row(children: [
+                                        Icon(Icons.date_range,color: Colors.black,size: 16,),
+                                        Expanded(
+                                            flex : 1,
+                                            child:
+                                            Text(orderData!.fromDate.toString(), style: kLargeDescStyle)),
+                                      ],),
+                                      SizedBox(height: 10,),
+                                      /*Row(children: [
                 Icon(Icons.access_time_outlined,color: Colors.black,size: 16,),
                 Expanded(
                     flex : 2,
                     child:
                     Text('10:10 PM', style: kLargeDescStyle)),
                 Spacer(),
-              ],),
-
-            ]))))
-
-
-      ])),
-        children: [
-          Padding(padding: EdgeInsets.all(10),
-          child:
-        Column(children: [
-          Row(
-            children: [
+              ],),*/
+                                    ]))))
+                  ])),
+          children: [
+            Padding(padding: EdgeInsets.all(10),
+                child:
+                Column(children: [
+                    orderData!.typeOfTrip.toString() != 'Dropping'?
+                Row(
+                  children: [
+                    Expanded(
+                        flex : 2,
+                        child:
+                        Text('No. of Days:', style: kLargeDescStyle)),
+                    Expanded(
+                        flex : 3,
+                        child:
+                        Text(orderData!.totalDate.toString(), style: kLargeDescStyle)),
+                  ],):SizedBox.shrink(),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Expanded(
+                        flex : 2,
+                        child:
+                        Text('From Date:', style: kLargeDescStyle)),
+                    Expanded(
+                        flex : 3,
+                        child:
+                        Text(orderData!.fromDate.toString(), style: kLargeDescStyle)),
+                  ],),
+                SizedBox(height: 10,),
+                orderData!.typeOfTrip.toString() != 'Dropping'?
+                Row(
+                  children: [
+                    Expanded(
+                        flex : 2,
+                        child:
+                        Text('To Date:', style: kLargeDescStyle)),
+                    Expanded(
+                        flex : 3,
+                        child:
+                        Text(orderData!.toDate.toString(), style: kLargeDescStyle)),
+                  ],):SizedBox.shrink(),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Expanded(
+                        flex : 2,
+                        child:
+                        Text('Trip Type:', style: kLargeDescStyle)),
+                    Expanded(
+                        flex : 3,
+                        child:
+                        Text(orderData!.typeOfTrip.toString(), style: kLargeDescStyle)),
+                  ],),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Expanded(
+                        flex : 2,
+                        child:
+                        Text('Seater:', style: kLargeDescStyle)),
+                    Expanded(
+                        flex : 3,
+                        child:
+                        Text(orderData!.seater.toString(), style: kLargeDescStyle)),
+                  ],),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Expanded(
+                        flex : 2,
+                        child:
+                        Text('Bus Name:', style: kLargeDescStyle)),
+                    Expanded(
+                        flex : 3,
+                        child:
+                        Text(orderData!.busName.toString(), style: kLargeDescStyle)),
+                  ],),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Expanded(
+                        flex : 2,
+                        child:
+                        Text('Bus Details:', style: kLargeDescStyle)),
+                    Expanded(
+                        flex : 3,
+                        child:
+                        Text(orderData!.busDetails.toString(), style: kLargeDescStyle)),
+                  ],),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Expanded(
+                        flex : 2,
+                        child:
+                        Text('Customer Name:', style: kLargeDescStyle)),
+                    Expanded(
+                        flex : 3,
+                        child:
+                        Text(orderData!.customerName.toString(), style: kLargeDescStyle)),
+                  ],),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Expanded(
+                        flex : 2,
+                        child:
+                        Text('Contact No:', style: kLargeDescStyle)),
+                    Expanded(
+                        flex : 3,
+                        child:
+                        Text(orderData!.customerMob.toString(), style: kLargeDescStyle)),
+                  ],),
+                SizedBox(height: 10,),
+                Row(children: [
+                  /* Expanded(
+                flex : 2,
+                child:
+                Text('Description:', style: kLargeDescStyle)),*/
+                  Expanded(
+                      flex : 3,
+                      child:
+                      Text(orderData!.description.toString(), style: kLargeDescStyle)),
+                ],),
+                SizedBox(height: 10,),
+                Row(children: [
+                  Expanded(
+                      flex : 2,
+                      child:
+                      Text('Total Km:', style: kLargeDescStyle)),
+                  Expanded(
+                      flex : 3,
+                      child:
+                      Text(orderData!.expectedtotalKM.toString(), style: kLargeDescStyle)),
+                ],),
+                SizedBox(height: 10,),
+                Row(children: [
+                    Expanded(
+                    flex : 2,
+                    child:
+                    Text('Fare of Trip:', style: kLargeDescStyle)),
+                Expanded(
+                    flex : 3,
+                    child:
+                    Text("${(double.tryParse(orderData?.totalPrice ?? "0") ?? 0).round()}", style: kLargeDescStyle)),
+                      ],),
+                    SizedBox(height: 10,),
+                    /*Row(children: [
             Expanded(
                 flex : 2,
                 child:
-                Text('No. of Days:', style: kLargeDescStyle)),
+                Text('Booking Amount:', style: kLargeDescStyle)),
             Expanded(
                 flex : 3,
                 child:
-                Text('5', style: kLargeDescStyle)),
-          ],),
-
-          SizedBox(height: 10,),
-          Row(children: [
-            Expanded(
-                flex : 2,
-                child:
-                Text('Description:', style: kLargeDescStyle)),
-            Expanded(
-                flex : 3,
-                child:
-                Text('travel from this to this', style: kLargeDescStyle)),
-          ],),
-
-          SizedBox(height: 10,),
+                Text(orderData!.advanceAmount.toString(), style: kLargeDescStyle)),
+          ],),*/
+                    /* SizedBox(height: 10,),
           Row(children: [
             Expanded(
                 flex : 2,
@@ -176,74 +297,62 @@ class FreelancerCard extends StatelessWidget {
                 flex : 3,
                 child:
                 Text('50', style: kLargeDescStyle)),
-          ],),
-
-          SizedBox(height: 10,),
-
-
-
-          SizedBox(height: 10,),
-          Row(children: [
-            Expanded(
-                child:
-                MaterialButton(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  color: Colors.amber,
-                  shape: kShape,
-                  onPressed: () {
-                    /*  Navigator.push(
+          ],),*/
+                    SizedBox(height: 10,),
+                    SizedBox(height: 10,),
+                    Row(children: [
+                      Expanded(
+                        child:
+                        MaterialButton(
+                          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                          color: Colors.amber,
+                          shape: kShape,
+                          onPressed: () {
+                            onRejectpress1();
+                            /*  Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => DateAndTime(),
                       ),
                     );*/
-                  },
-                  child: const Text(
-                    'Reject',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),),
-            SizedBox(width: 10,),
-
-            Expanded(
-                child:
-                MaterialButton(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  color: Colors.amber,
-                  shape: kShape,
-                  onPressed: () {
-                    /*  Navigator.push(
+                          },
+                          child: const Text(
+                            'Reject',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),),
+                      SizedBox(width: 10,),
+                      Expanded(
+                        child:
+                        MaterialButton(
+                          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                          color: Colors.amber,
+                          shape: kShape,
+                          onPressed: () {
+                            onpress1();
+                            /*  Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => DateAndTime(),
                       ),
                     );*/
-                  },
-                  child: const Text(
-                    'Accept',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),),
-          ],),
-
-
-          SizedBox(height: 10,),
-
-
-        ]))
-
-
-        ],
-
-
-    ));
-
+                          },
+                          child: const Text(
+                            'Accept',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),),
+                    ],),
+                    SizedBox(height: 10,),
+                    ]))
+          ],
+        ));
     /*Card(
       elevation: 5,
       color: color,
@@ -351,5 +460,4 @@ class FreelancerCard extends StatelessWidget {
         ),
       ),
     );*/
-  }
-}
+  }}
